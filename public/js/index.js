@@ -44,6 +44,13 @@ let userDataPanelSubmit = document.querySelector(".last__show-submit");
 let nullCounter = 0;
 let state = [];
 
+
+/*
+
+Запуск текстовых анимаций.
+Задаются необходимые высоты и прозрачность
+
+*/
 let textAnimationStart = (temp = null) => {
     let delay;
     (temp === null) ? delay = 0 : delay = temp;
@@ -52,7 +59,7 @@ let textAnimationStart = (temp = null) => {
     animateCSS(askImg, animateIn, "fast", appender(askImg));
     animateCSS(askTitle, animateIn, "fast", appender(askTitle));
     let cloneLoader = loader.cloneNode(true);
-    loader.parentNode.replaceChild(cloneLoader,loader);
+    loader.parentNode.replaceChild(cloneLoader, loader);
     loader = cloneLoader;
     if (state.length > 1) {
         animateCSS(btnSection, animateIn, `${delay === 0 ? "fast" : "delay-2s"}`, appender(btnSection));
@@ -62,6 +69,10 @@ let textAnimationStart = (temp = null) => {
     submitInputBox.style.display = "none";
 };
 
+/*
+    В данном тесте не используется, предназначена для анимирования и вывода полей ввода
+    Создаются все необходимые поля ввода.
+*/
 let inputAnimationStart = (question, submitBtnShow = true) => {
     let type = question.type_input;
     inputBox.querySelector(".response_input").remove();
@@ -114,7 +125,7 @@ let inputAnimationStart = (question, submitBtnShow = true) => {
     }
     if (type !== ("file" && "date")) {
         newInput.addEventListener('keydown', function (e) {
-            const {keyCode} = e;
+            const { keyCode } = e;
             if (keyCode === 13) {
                 submitInputBoxListener();
             }
@@ -141,6 +152,9 @@ let inputAnimationStart = (question, submitBtnShow = true) => {
     inputBox.style.padding = "30px 0 0";
 };
 
+/*
+    Предназначен для анимации Out для полей ввода и обычных вопросов
+*/
 let textAnimationOut = () => {
     animateCSS(ask, animateOut, "faster", remover(ask));
     animateCSS(answerBox, animateOut, "fast", remover(answerBox));
@@ -157,19 +171,20 @@ let inputAnimationOut = () => {
 
 // wait preview question
 
-document.querySelector(".start-test").addEventListener("click",()=>{
+/* 
+    Кнопка старта теста, появление необходимых элементов и изменение сетки для перевода ее на вопросы, анимация входа для полей loader и номеров вопроса
+*/
+document.querySelector(".start-test").addEventListener("click", () => {
 
     //stat
-yaCounter29913264.reachGoal ('third_step');
-    gtag('event', 'third_step', {'event_category': 'button', 'event_label': 'begin'});
+    yaCounter29913264.reachGoal('third_step');
+    gtag('event', 'third_step', { 'event_category': 'button', 'event_label': 'begin' });
     //
 
     animateCSS(ask, animateOut, "fast", remover(ask));
     animateCSS(document.querySelector(".start-test"), animateOut, "fast", remover(document.querySelector(".start-test")));
-    //animateCSS(document.querySelector("#loader"), animateOut, "fast", remover(document.querySelector("#loader")));
-    //document.querySelector("#loader").remove();
     ask.classList.remove("delay-1s");
-    setTimeout(()=>{
+    setTimeout(() => {
         document.querySelector(".content").style.gridTemplateColumns = "425px 7fr";
         document.querySelector(".content").style.gridGap = "0 70px";
         document.querySelector(".ask-content").style.textAlign = "left";
@@ -179,11 +194,13 @@ yaCounter29913264.reachGoal ('third_step');
         getQuestion();
         animateCSS(loader, animateIn, "fast", appender(loader));
         animateCSS(questionNumberBox, animateIn, "faster", appender(questionNumberBox));
-    },animationWait);
+    }, animationWait);
 });
 
 //
-
+/*
+    remover и appender колбеки для удаления и соответственно задания высот и прозрачностей при анимациях
+*/
 function remover(elem) {
     setTimeout(() => {
         elem.style.opacity = 0;
@@ -200,88 +217,98 @@ function appender(elem) {
     elem.style.maxHeight = "100%";
 }
 
-inputBox.addEventListener('input', function(event) {
-    if(event.keyCode == 13) {
+inputBox.addEventListener('input', function (event) {
+    if (event.keyCode == 13) {
         event.preventDefault();
     }
 });
 
-answer.forEach((el,index) => {
+
+/*
+    Задание обработчиков для клика на какой либо из ответов.
+*/
+answer.forEach((el, index) => {
     el.addEventListener("click", (e) => {
         //statistic
-        if(index === 0 && nullCounter === 0){
-            yaCounter29913264.reachGoal ('1varian_fav');
-            gtag('event', 'favourite', {'event_category': 'question', 'event_label': '1_variant'});
-        }else if(index === 1 && nullCounter === 0){
-            yaCounter29913264.reachGoal ('2varian_fav');
-            gtag('event', 'favourite', {'event_category': 'question', 'event_label': '2_variant'});
-        }else if(index === 0 && nullCounter === 1){
-            yaCounter29913264.reachGoal ('1varian_fev');
-            gtag('event', 'fever', {'event_category': 'question', 'event_label': '1_variant'});
-        }else if(index === 1 && nullCounter === 1){
-            yaCounter29913264.reachGoal ('2varian_fev');
-            gtag('event', 'fever', {'event_category': 'question', 'event_label': '2_variant'});
-        }else if(index === 0 && nullCounter === 2){
-            yaCounter29913264.reachGoal ('1varian_hir');
-            gtag('event', 'hir', {'event_category': 'question', 'event_label': '1_variant'});
-        }else if(index === 1 && nullCounter === 2){
-            yaCounter29913264.reachGoal ('2varian_hir');
-            gtag('event', 'hir', {'event_category': 'question', 'event_label': '2_variant'});
-        }else if(index === 0 && nullCounter === 3){
-            yaCounter29913264.reachGoal ('1varian_gob');
-            gtag('event', 'gobbleolygook', {'event_category': 'question', 'event_label': '1_variant'});
-        }else if(index === 1 && nullCounter === 3){
-            yaCounter29913264.reachGoal ('2varian_gob');
-            gtag('event', 'gobbleolygook', {'event_category': 'question', 'event_label': '2_variant'});
-        }else if(index === 0 && nullCounter === 4){
-            yaCounter29913264.reachGoal ('1varian_pre');
-            gtag('event', 'presser', {'event_category': 'question', 'event_label': '1_variant'});
-        }else if(index === 1 && nullCounter === 4){
-            yaCounter29913264.reachGoal ('2varian_pre');
-            gtag('event', 'presser', {'event_category': 'question', 'event_label': '2_variant'});
-        }else if(index === 0 && nullCounter === 5){
-            yaCounter29913264.reachGoal ('1varian_chi');
-            gtag('event', 'chipmunnky', {'event_category': 'question', 'event_label': '1_variant'});
-        }else if(index === 1 && nullCounter === 5){
-            yaCounter29913264.reachGoal ('2varian_chi');
-            gtag('event', 'chipmunnky', {'event_category': 'question', 'event_label': '2_variant'});
-        }else if(index === 0 && nullCounter === 6){
-            yaCounter29913264.reachGoal ('1varian_peo');
-            gtag('event', 'peoplekind', {'event_category': 'question', 'event_label': '1_variant'});
-        }else if(index === 1 && nullCounter === 6){
-            yaCounter29913264.reachGoal ('2varian_peo');
-            gtag('event', 'peoplekind', {'event_category': 'question', 'event_label': '2_variant'});
-        }else if(index === 0 && nullCounter === 7){
-            yaCounter29913264.reachGoal ('1varian_tra');
-            gtag('event', 'translingual', {'event_category': 'question', 'event_label': '1_variant'});
-        }else if(index === 1 && nullCounter === 7){
-            yaCounter29913264.reachGoal ('2varian_tra');
-            gtag('event', 'translingual', {'event_category': 'question', 'event_label': '2_variant'});
-        }else if(index === 0 && nullCounter === 8){
-            yaCounter29913264.reachGoal ('1varian_eek');
-            gtag('event', 'eeksie-peeksie', {'event_category': 'question', 'event_label': '1_variant'});
-        }else if(index === 1 && nullCounter === 8){
-            yaCounter29913264.reachGoal ('2varian_eek');
-            gtag('event', 'eeksie-peeksie', {'event_category': 'question', 'event_label': '2_variant'});
-        }else if(index === 0 && nullCounter === 9){
-            yaCounter29913264.reachGoal ('1varian_bro');
-            gtag('event', 'brown', {'event_category': 'question', 'event_label': '1_variant'});
-        }else if(index === 1 && nullCounter === 9){
-            yaCounter29913264.reachGoal ('2varian_bro');
-            gtag('event', 'brown', {'event_category': 'question', 'event_label': '2_variant'});
+        if (index === 0 && nullCounter === 0) {
+            yaCounter29913264.reachGoal('1varian_fav');
+            gtag('event', 'favourite', { 'event_category': 'question', 'event_label': '1_variant' });
+        } else if (index === 1 && nullCounter === 0) {
+            yaCounter29913264.reachGoal('2varian_fav');
+            gtag('event', 'favourite', { 'event_category': 'question', 'event_label': '2_variant' });
+        } else if (index === 0 && nullCounter === 1) {
+            yaCounter29913264.reachGoal('1varian_fev');
+            gtag('event', 'fever', { 'event_category': 'question', 'event_label': '1_variant' });
+        } else if (index === 1 && nullCounter === 1) {
+            yaCounter29913264.reachGoal('2varian_fev');
+            gtag('event', 'fever', { 'event_category': 'question', 'event_label': '2_variant' });
+        } else if (index === 0 && nullCounter === 2) {
+            yaCounter29913264.reachGoal('1varian_hir');
+            gtag('event', 'hir', { 'event_category': 'question', 'event_label': '1_variant' });
+        } else if (index === 1 && nullCounter === 2) {
+            yaCounter29913264.reachGoal('2varian_hir');
+            gtag('event', 'hir', { 'event_category': 'question', 'event_label': '2_variant' });
+        } else if (index === 0 && nullCounter === 3) {
+            yaCounter29913264.reachGoal('1varian_gob');
+            gtag('event', 'gobbleolygook', { 'event_category': 'question', 'event_label': '1_variant' });
+        } else if (index === 1 && nullCounter === 3) {
+            yaCounter29913264.reachGoal('2varian_gob');
+            gtag('event', 'gobbleolygook', { 'event_category': 'question', 'event_label': '2_variant' });
+        } else if (index === 0 && nullCounter === 4) {
+            yaCounter29913264.reachGoal('1varian_pre');
+            gtag('event', 'presser', { 'event_category': 'question', 'event_label': '1_variant' });
+        } else if (index === 1 && nullCounter === 4) {
+            yaCounter29913264.reachGoal('2varian_pre');
+            gtag('event', 'presser', { 'event_category': 'question', 'event_label': '2_variant' });
+        } else if (index === 0 && nullCounter === 5) {
+            yaCounter29913264.reachGoal('1varian_chi');
+            gtag('event', 'chipmunnky', { 'event_category': 'question', 'event_label': '1_variant' });
+        } else if (index === 1 && nullCounter === 5) {
+            yaCounter29913264.reachGoal('2varian_chi');
+            gtag('event', 'chipmunnky', { 'event_category': 'question', 'event_label': '2_variant' });
+        } else if (index === 0 && nullCounter === 6) {
+            yaCounter29913264.reachGoal('1varian_peo');
+            gtag('event', 'peoplekind', { 'event_category': 'question', 'event_label': '1_variant' });
+        } else if (index === 1 && nullCounter === 6) {
+            yaCounter29913264.reachGoal('2varian_peo');
+            gtag('event', 'peoplekind', { 'event_category': 'question', 'event_label': '2_variant' });
+        } else if (index === 0 && nullCounter === 7) {
+            yaCounter29913264.reachGoal('1varian_tra');
+            gtag('event', 'translingual', { 'event_category': 'question', 'event_label': '1_variant' });
+        } else if (index === 1 && nullCounter === 7) {
+            yaCounter29913264.reachGoal('2varian_tra');
+            gtag('event', 'translingual', { 'event_category': 'question', 'event_label': '2_variant' });
+        } else if (index === 0 && nullCounter === 8) {
+            yaCounter29913264.reachGoal('1varian_eek');
+            gtag('event', 'eeksie-peeksie', { 'event_category': 'question', 'event_label': '1_variant' });
+        } else if (index === 1 && nullCounter === 8) {
+            yaCounter29913264.reachGoal('2varian_eek');
+            gtag('event', 'eeksie-peeksie', { 'event_category': 'question', 'event_label': '2_variant' });
+        } else if (index === 0 && nullCounter === 9) {
+            yaCounter29913264.reachGoal('1varian_bro');
+            gtag('event', 'brown', { 'event_category': 'question', 'event_label': '1_variant' });
+        } else if (index === 1 && nullCounter === 9) {
+            yaCounter29913264.reachGoal('2varian_bro');
+            gtag('event', 'brown', { 'event_category': 'question', 'event_label': '2_variant' });
         }
         //
         clearTimeout(userTimeout);
         answerEventClick(e, el.innerHTML);
     });
 });
-
+/* 
+В данном тесте не используется предназначен для отправки данных из полей ввода 
+*/
 submitInputBox.addEventListener("click", function (e) {
     e.preventDefault();
     window.scrollTo(0, 0);
     submitInputBoxListener();
 });
 
+/*
+    Получение вопроса из БД, принимает данные для отправки на сервер, отправка файла не используется, происходит отправка ответа на вопрос и передача ответа в showRequestAnswer для 
+    вывода следующих данных
+*/
 async function getQuestion(answer = null, type = null, isFile = false, userAnswer = null) {
     if (isFile === true) {
         let xhttpFile = new XMLHttpRequest();
@@ -334,6 +361,9 @@ async function getQuestion(answer = null, type = null, isFile = false, userAnswe
     }
 }
 
+/*
+    Обработчик клика для ответов
+*/
 function answerEventClick(e, content) {
     if (+currentQuestion.innerHTML + 1 <= +countQuestions.innerHTML) {
         currentQuestion.innerHTML = +currentQuestion.innerHTML + 1;
@@ -346,7 +376,9 @@ function answerEventClick(e, content) {
 
     e.target.removeEventListener("click", answerEventClick);
 }
-
+/*
+    Обработчик клика для полей ввода
+*/
 function submitInputBoxListener() {
     //statistic
     //
@@ -385,6 +417,9 @@ function submitInputBoxListener() {
     submitInputBox.removeEventListener("click", submitInputBoxListener);
 }
 
+/*
+   Вывод данных о следующем вопросе
+*/
 async function showRequestAnswer(question, userAnswer = null) {
     (question.nullQuestion === 0) ? nullCounter = 1 : question.nullQuestion === null ? nullCounter : nullCounter = question.nullQuestion;
     ask.innerHTML = question.ask.split("\n").join(`<br>`);
@@ -392,8 +427,8 @@ async function showRequestAnswer(question, userAnswer = null) {
     if (userAnswer) {
         state[state.length - 2].userAnswer = userAnswer;
     }
-    userTimeout = setTimeout(()=>{
-        getQuestion(null,"text",false,null);
+    userTimeout = setTimeout(() => {
+        getQuestion(null, "text", false, null);
         if (+currentQuestion.innerHTML + 1 <= +countQuestions.innerHTML) {
             currentQuestion.innerHTML = +currentQuestion.innerHTML + 1;
             progressBar.style.width = `${+currentQuestion.innerHTML * loaderPixelPercent}px`;
@@ -401,7 +436,7 @@ async function showRequestAnswer(question, userAnswer = null) {
     }, userTimer);
     if (question.type === "text") {
         if (question.ask == "LAST_RESPONSE") {
-            if (question.isTeammate){
+            if (question.isTeammate) {
                 document.querySelectorAll('.last__show .form-group')[1].remove();
                 document.querySelector(".name").parentNode.style.display = "none";
                 document.querySelector(".surname").parentNode.style.display = "none";
@@ -429,7 +464,6 @@ async function showRequestAnswer(question, userAnswer = null) {
             question.answer.forEach(function (el, index) {
                 document.querySelectorAll(".answer")[index].innerHTML = el;
             });
-           // askImg.querySelector("img").setAttribute("src",`../img/files/${question.img}`);
             askImg.style.background = `url(../img/files/${question.img}) no-repeat right`;
             setTimeout(textAnimationStart, animationWait);
         } else {
@@ -445,7 +479,7 @@ async function showRequestAnswer(question, userAnswer = null) {
             let lastButton = document.createElement("button");
             lastButton.classList.add("btn", "btn-custom", "btn-success", "send-btn");
             lastButton.innerHTML = "Отправить";
-            lastButton.addEventListener("click",sendUsersAnswers);
+            lastButton.addEventListener("click", sendUsersAnswers);
             btnSection.insertBefore(lastButton, submitInputBox);
             showSubmitBtn = false;
         } else {
@@ -458,21 +492,23 @@ async function showRequestAnswer(question, userAnswer = null) {
         }, 200);
     }
 }
-
-isAlone.addEventListener("click",()=>{
-    if(isAlone.checked){
-        document.querySelector(".teammate_name").setAttribute("disabled","disabled");
-        document.querySelector(".teammate_surname").setAttribute("disabled","disabled");
-        document.querySelector(".teammate_phone").setAttribute("disabled","disabled");
-        document.querySelector(".teammate_status").setAttribute("disabled","disabled");
-        document.querySelector(".teammate_name").setAttribute("readonly","readonly");
-        document.querySelector(".teammate_surname").setAttribute("readonly","readonly");
-        document.querySelector(".teammate_phone").setAttribute("readonly","readonly");
-        document.querySelector(".teammate_status").setAttribute("readonly","readonly");
+/*
+    В случае если пользователь проходит один input получают соответствующие стили
+*/
+isAlone.addEventListener("click", () => {
+    if (isAlone.checked) {
+        document.querySelector(".teammate_name").setAttribute("disabled", "disabled");
+        document.querySelector(".teammate_surname").setAttribute("disabled", "disabled");
+        document.querySelector(".teammate_phone").setAttribute("disabled", "disabled");
+        document.querySelector(".teammate_status").setAttribute("disabled", "disabled");
+        document.querySelector(".teammate_name").setAttribute("readonly", "readonly");
+        document.querySelector(".teammate_surname").setAttribute("readonly", "readonly");
+        document.querySelector(".teammate_phone").setAttribute("readonly", "readonly");
+        document.querySelector(".teammate_status").setAttribute("readonly", "readonly");
         document.querySelector(".teammate_name").style.background = "#eee";
         document.querySelector(".teammate_surname").style.background = "#eee";
         document.querySelector(".teammate_phone").style.background = "#eee";
-    }else{
+    } else {
         document.querySelector(".teammate_name").removeAttribute("disabled");
         document.querySelector(".teammate_surname").removeAttribute("disabled");
         document.querySelector(".teammate_phone").removeAttribute("disabled");
@@ -487,54 +523,57 @@ isAlone.addEventListener("click",()=>{
     }
 });
 
-userDataPanelSubmit.addEventListener("click",(e)=>{
-   e.preventDefault();
-   block.appendChild(resultNode);
-   let input;
-   if (document.querySelectorAll('.last__show .form-group').length === 2){
-       let username = document.querySelector(".name").value;
-       let usersurname = document.querySelector(".surname").value;
-       let userEmail = document.querySelector(".email").value;
-       let userPhone = document.querySelector(".phone").value;
-       let userTeammateName = document.querySelector(".teammate_name").value;
-       let userTeammateSurname = document.querySelector(".teammate_surname").value;
-       let userTeammatePhone = document.querySelector(".teammate_phone").value;
-       let userTeammateStatus = document.querySelector(".teammate_status").value;
+/*
+    Отправка данных пользователя и его сокомандника
+*/
+userDataPanelSubmit.addEventListener("click", (e) => {
+    e.preventDefault();
+    block.appendChild(resultNode);
+    let input;
+    if (document.querySelectorAll('.last__show .form-group').length === 2) {
+        let username = document.querySelector(".name").value;
+        let usersurname = document.querySelector(".surname").value;
+        let userEmail = document.querySelector(".email").value;
+        let userPhone = document.querySelector(".phone").value;
+        let userTeammateName = document.querySelector(".teammate_name").value;
+        let userTeammateSurname = document.querySelector(".teammate_surname").value;
+        let userTeammatePhone = document.querySelector(".teammate_phone").value;
+        let userTeammateStatus = document.querySelector(".teammate_status").value;
 
-       input = JSON.stringify({
-           username,
-           usersurname,
-           userEmail,
-           userPhone,
-           userTeammateName,
-           userTeammateSurname,
-           userTeammatePhone,
-           userTeammateStatus,
-           "isAlone": isAlone.checked,
-       });
-   }else{
-       let userEmail = document.querySelector(".email").value;
+        input = JSON.stringify({
+            username,
+            usersurname,
+            userEmail,
+            userPhone,
+            userTeammateName,
+            userTeammateSurname,
+            userTeammatePhone,
+            userTeammateStatus,
+            "isAlone": isAlone.checked,
+        });
+    } else {
+        let userEmail = document.querySelector(".email").value;
 
-       input = JSON.stringify({
-           userEmail,
-       });
-   }
+        input = JSON.stringify({
+            userEmail,
+        });
+    }
 
-   let userDataRequest = new XMLHttpRequest();
+    let userDataRequest = new XMLHttpRequest();
     userDataRequest.open("POST", "/test/public/api/userdata", true);
     userDataRequest.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     userDataRequest.send(input);
     userDataRequest.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            yaCounter29913264.reachGoal ('success_test');
-            gtag('event', 'success_test', {'event_category': 'button', 'event_label': 'form'});
+            yaCounter29913264.reachGoal('success_test');
+            gtag('event', 'success_test', { 'event_category': 'button', 'event_label': 'form' });
             document.querySelector('.content').remove();
             loader.remove();
             let answerPercent = JSON.parse(userDataRequest.responseText);
-            if (answerPercent.error){
+            if (answerPercent.error) {
                 document.querySelector(".result__panel span").innerHTML = "Данный email уже зарегистрирован";
-            }else{
-                document.querySelector(".result__link").innerHTML = "Ссылка для партнера: <br>"+ answerPercent.userLink;
+            } else {
+                document.querySelector(".result__link").innerHTML = "Ссылка для партнера: <br>" + answerPercent.userLink;
                 document.querySelector(".result__panel-percent").innerHTML = `${answerPercent.answerScore} баллов`
             }
             animateCSS(document.querySelector(".last__show"), animateOut, "faster", remover(document.querySelector(".last__show")));
@@ -545,11 +584,17 @@ userDataPanelSubmit.addEventListener("click",(e)=>{
     };
 });
 
-document.querySelector(".teammate_status").addEventListener("change",()=>{
-    document.querySelector(".teammate_status").style.color =  "#202020";
+/*
+    Дизайнерские приколы)
+*/
+document.querySelector(".teammate_status").addEventListener("change", () => {
+    document.querySelector(".teammate_status").style.color = "#202020";
 });
 
-let sendUsersAnswers = ()=>{
+/*
+    Валидация и отправка пользовательских ответов, не используется
+*/
+let sendUsersAnswers = () => {
     //statistic
     //
     inputText = document.querySelector(".response_input");
@@ -598,6 +643,9 @@ function validate(el) {
     }
 }
 
+/*
+    Предназначена для показа превью загружаемых пользователем изовбражений, не используется
+*/
 function showPreview() {
 
     let preview = document.querySelector('.preview');

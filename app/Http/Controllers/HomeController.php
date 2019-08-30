@@ -20,6 +20,8 @@ class HomeController extends Controller
     protected $token;
     protected $userCookie;
 
+
+    //Константа последнего ответа пользователю
     private const LAST_RESPONSE = array(
         'code' => 200,
         'ask' => "LAST_RESPONSE",
@@ -28,6 +30,8 @@ class HomeController extends Controller
         'isTeammate' => false
     );
 
+    //Метод для получения пользовательских данных, валидация полей и в случае ошибки возврат того что пользователь не валиден
+    // добавление данных в БД в зависимости от критерия и конечный подсчет рейтинга и отправка данных админу и пользователю.
     public function getUserData(Request $request)
     {
 
@@ -158,6 +162,7 @@ class HomeController extends Controller
         }
     }
 
+    // База построена по принципу выбора null question у которых нет родителя. Соответственно выбираются данные без родителя. и его дети. Работа с куки, token и teammate
     private function getNullQuestionResponse(Question $question, $null_questions, $nullQuestion, $token = null, $userInput = null)
     {
         $tokenList = User::where("token", "=", $this->token)->pluck("token")->toArray();
@@ -226,6 +231,7 @@ class HomeController extends Controller
         return response()->json(self::LAST_RESPONSE, 200);
     }
 
+    //функция для приема данных, загрузка файла(закомментирована) , принятие полей ввода, управление в данном тесте передается функции вверху.
     public function index(Request $request, Question $question)
     {
         $this->token = Cookie::get('token');
@@ -306,6 +312,7 @@ class HomeController extends Controller
 
     }
 
+    // метод в случае захода пользователя по ссылке, ищется ссылка с подобным токеном в БД, в случае совпадения и при условии что токенов зарегестрировано менее двух происходит переадресация с нужными куками
     public function teammateHome($token)
     {
         $user_token = User::where('link', '=', URL::to('/') . "/" . $token)->pluck("link")->toArray();
@@ -338,6 +345,7 @@ class HomeController extends Controller
         }
     }
 
+    //отправка рассылок админам и пользователям
     public function sendUserEmailResponse($name, $link, $email, $isAlone = false)
     {
 
